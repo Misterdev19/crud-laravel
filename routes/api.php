@@ -11,9 +11,7 @@ Route::get('/students/{id}', function(){
     return "Obteniendo un solo estudiante";
 }); 
 
-Route::post('/students', function(){
-    return "creando estudiante";
-}); 
+Route::post('/students',[studenst::class, 'store' ]); 
 
 Route::put('/students/{id}', function(){
     return "actulizando estudiante";
