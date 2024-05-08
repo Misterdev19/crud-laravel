@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Students;
 use Illuminate\Support\Facades\Validator;
 
-use function Laravel\Prompts\error;
-
 class studenst extends Controller
 {
      public function index(){
@@ -74,5 +72,50 @@ class studenst extends Controller
              ];
 
              return response()->json($data ,  201);
+     }
+
+     public function getStudent($id){
+
+        $student  =  Students::find($id);
+
+        
+        if(!$student){
+            $data  =  [
+                'message' => "No se encontraron estudiantes",
+                'status' => 404
+            ];
+           return response()->json($data ,  404);
+        }
+
+        $data  =  [
+            'student' => $student,
+            'status' => 200
+        ];
+         
+        
+         return  response()->json($data ,  200);
+     }
+
+     public function deleteStudent($id){
+
+        $student  =  Students::find($id);
+
+        
+        if(!$student){
+            $data  =  [
+                'message' => "No se encontraron estudiantes",
+                'status' => 404
+            ];
+           return response()->json($data ,  404);
+        }
+
+        $student->delete();
+
+        $data = [
+            'message' => 'Estudiante eliminado',
+            'status' => 200
+        ];
+         
+       return response()->json($data ,  200); 
      }
 }
