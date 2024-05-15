@@ -27,11 +27,11 @@ class studenst extends Controller
 
 
              $responseValidator =  Validator::make($request->all() , [
-                 'first_name' => 'required',
-                 'last_name' => 'required',
+                 'first_name' => 'required|max:255',
+                 'last_name' => 'required|max:255',
                  'phone' => 'required',
-                 'email' => 'required|email',
-                 'lenguage' => 'required',
+                 'email' => 'required|email|unique:students',
+                 'lenguage' => 'required|in:espanol,ingles',
              ]); 
 
 
@@ -117,5 +117,55 @@ class studenst extends Controller
         ];
          
        return response()->json($data ,  200); 
+     }
+
+     public function updateStudent(Request $request, $id){
+
+        $student  =  Students::find($id);
+        if(!$student){
+            $data  =  [
+                'message' => "No se encontraron estudiantes",
+                'status' => 404
+            ];
+           return response()->json($data ,  404);
+        }
+
+       $validator =  Validator::make($request->all() , [
+        'first_name' => 'required|max:255',
+        'last_name' => 'required|max:255',
+        'phone' => 'required',
+        'email' => 'required|email|unique:students',
+        'lenguage' => 'required|in:espanol,ingles',
+
+       ]);
+
+       if($validator->fails()){
+            $data  =  [
+                'message' => "Error en la validacion de los datos",
+                'erross' => $validator->errors(),
+                'status' => 400
+            ];
+
+            return response()->json($data ,  400);
+
+      }
+
+      $student->update([
+          'first_name' => $request->first_name,
+          'last_name' => $request->last_name,
+          'phone' => $request->phone,
+          'email' => $request->email,
+          'lenguage' => $request->lenguage,
+      ]);
+
+      
+      $data  =  [
+          'student' => $student,
+          'message' => "Estudiante actualizado correctamente",
+          'status' => 200
+      ];
+
+
+        return response()->json($data,  200);
      }
 }
