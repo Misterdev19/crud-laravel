@@ -3,6 +3,8 @@
  
  use Tests\TestCase;
  use App\Http\Controllers\Api\studenst;
+ use Illuminate\Http\Request;
+
 
  class StudentTest extends TestCase
  {
@@ -82,38 +84,67 @@
     //    }
 
 
-    public function test_update_student():void{
+    // public function test_update_student():void{
 
-        //deberia de existir el metodo updateStudent
-        $this->assertTrue(
-            method_exists(studenst::class, 'updateStudent'), 
-            'El metodo updateStudent no existe'
-        );
+    //     //deberia de existir el metodo updateStudent
+    //     $this->assertTrue(
+    //         method_exists(studenst::class, 'updateStudent'), 
+    //         'El metodo updateStudent no existe'
+    //     );
 
-         //deberia de retornar un objeto
-        // $studens = new studenst();
-        // $response = $studens->updateStudent(json_decode());
-        // $this->assertIsObject($response);
+    //      //deberia de retornar un objeto
+    //     // $studens = new studenst();
+    //     // $response = $studens->updateStudent(json_decode());
+    //     // $this->assertIsObject($response);
 
        
-        // deberia de retornar un stado 404 si el id no existe
-        // $response = $this->put('/api/students/78');
-        // $response->assertStatus(404);
+    //     // deberia de retornar un stado 404 si el id no existe
+    //     // $response = $this->put('/api/students/78');
+    //     // $response->assertStatus(404);
 
 
-        //deberia de retornar un 400 si fallan las validaciones 
-        $response = $this->put('/api/students/7', [
-            'first_name' => 'Juan Peres',
-            'last_name' => 'Penagos Yara',
-            'phone' => '123456789',
-            'email' => 'penagos@example.com',
-            'lenguage' => 'espanol',
-        ]);
+    //     //deberia de retornar un 400 si fallan las validaciones 
+    //     $response = $this->put('/api/students/7', [
+    //         'first_name' => 'Juan Peres',
+    //         'last_name' => 'Penagos Yara',
+    //         'phone' => '123456789',
+    //         'email' => 'penagos@example.com',
+    //         'lenguage' => 'espanol',
+    //     ]);
 
-        $response->assertStatus(200);
+    //     $response->assertStatus(200);
         
       
         
-    }
-      
+    // }
+
+     public function test_udapte_patch_statudent()
+     {
+
+         // probamos que exista un method llamada updatePachtStudnest
+        //   $this->assertTrue(
+        //        method_exists(studenst::class , 'updatePachtStudnest'),
+        //        'Deberia de existir metodo updatePachtStudnest'
+        //   );
+
+        //   //deberi de resibir dos parametros 
+        //   $reflection = new  \ReflectionClass(studenst::class);
+        //   $parameters = $reflection->getMethod('updatePachtStudnest')->getParameters();
+        //   $this->assertCount(2,  $parameters , 'Seberia de resivir dos parametros');
+         
+        // //deberia de retornar un ojecto'
+        //   $request =  Request::create('/api/students/3', 'PATCH', []);
+        //   $studens = new studenst();
+        //   $response  =  $studens->updatePachtStudnest($request,2);
+        //   $this->assertIsObject($response, 'seberia ser un objecto');
+          
+
+          //deberia de retornar un status code 400 si fallan las validaciones de los datos
+          $response = $this->patch('/api/students/7' ,  [
+                    'first_name' => 'Juan Peres',
+                ]);
+
+          $response->assertStatus(200);
+
+     }
  }

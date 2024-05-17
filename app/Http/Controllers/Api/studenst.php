@@ -168,4 +168,72 @@ class studenst extends Controller
 
         return response()->json($data,  200);
      }
+     public function updatePachtStudnest(Request $request, int $id)
+     {
+
+        $student  =  Students::find($id);
+        if(!$student)
+        {
+             $data  = [
+                 'message' => 'El estudiante no existe',
+                  'status'=> 404
+             ];
+
+             return response()->json($data, 404);
+        }
+
+        $validator  = validator::make($request->all(), [
+            'first_name' => 'max:255',
+            'last_name' => 'max:255',
+            'phone' => 'digits:10',
+            'email' => 'email|unique:students',
+            'lenguage' => 'in:espanol,ingles',
+        ]);
+
+        if($validator->fails()){
+            $data  =  [
+                'message' => "Error en la validacion de los datos",
+                'erross' => $validator->errors(),
+                'status' => 400
+            ];
+
+            return response()->json($data ,  400);
+
+        }
+
+        if($request->has('first_name'))
+        {
+             $student->first_name = $request->first_name;
+        }
+
+        if($request->has('last_name'))
+        {
+             $student->last_name = $request->last_name;
+        }
+        if($request->has('phone'))
+        {
+             $student->phone = $request->phone;
+        }
+        if($request->has('email'))
+        {
+             $student->email = $request->email;
+        }
+        if($request->has('lenguage'))
+        {
+             $student->lenguage = $request->lenguage;
+        }
+
+        $student->save();
+
+        $data = [
+             "message" => 'Estudiante actualizado',
+             'students' => $student,
+             'status' => 200
+        ];
+        
+
+
+         return response()->json($data, 200);
+
+     }
 }
